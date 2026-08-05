@@ -1,0 +1,11 @@
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  serverExternalPackages: ['@prisma/client', 'bcrypt'],
+  images: {
+    domains: ['localhost'],
+  },
+};
+
+export default nextConfig;
