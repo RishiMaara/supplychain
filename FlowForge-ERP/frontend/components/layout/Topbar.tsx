@@ -38,7 +38,7 @@ export default function Topbar({
   };
 
   return (
-    <header className="h-16 bg-white border-b border-surface-border flex items-center justify-between px-6 z-10 shrink-0 sticky top-0">
+    <header className="h-16 bg-white/70 backdrop-blur-md border-b border-surface-border flex items-center justify-between px-6 shrink-0 sticky top-0 z-50">
       <div className="flex items-center gap-4 flex-1">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -92,7 +92,7 @@ export default function Topbar({
           {showRoleMenu && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setShowRoleMenu(false)} />
-              <div className="absolute left-0 mt-1 w-64 bg-white border border-surface-border rounded-xl shadow-lg z-50 p-1.5 space-y-1 animate-fade-in">
+              <div className="absolute left-0 top-full mt-2 w-64 bg-white border border-surface-border rounded-xl shadow-xl z-[100] p-1.5 space-y-1 animate-fade-in">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-text-muted uppercase tracking-wider border-b border-slate-100 pb-1.5 mb-1">
                   Demo Sandbox Role Switcher
                 </div>
