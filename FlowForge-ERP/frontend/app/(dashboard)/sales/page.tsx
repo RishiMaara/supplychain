@@ -68,7 +68,7 @@ export default function SalesPage() {
   const originalNotes = selectedOrder ? getOriginalNotes(selectedOrder.notes) : '';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-slide-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h1 className="page-title">Sales Orders</h1>
@@ -80,7 +80,7 @@ export default function SalesPage() {
         </Link>
       </div>
 
-      <div className="glass-card flex flex-col min-h-[500px]">
+      <div className="glass-card flex flex-col" style={{ minHeight: 'calc(100vh - 13rem)' }}>
         <div className="flex-1 overflow-auto">
           {isLoading ? (
             <div className="p-8 flex justify-center items-center h-full min-h-[300px]">

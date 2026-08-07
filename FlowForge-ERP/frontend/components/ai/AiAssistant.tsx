@@ -120,7 +120,7 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({ isOpen, onClose }) => 
     setIsTyping(true);
 
     try {
-      const webhookUrl = 'https://api.agents.snsihub.ai/webhook-test/ffe27c5a-f302-478f-8c6e-723ddae680c8';
+      const webhookUrl = 'https://api.agents.snsihub.ai/webhook/ffe27c5a-f302-478f-8c6e-723ddae680c8';
       const userRole = user?.role || 'sales';
       const response = await fetch(webhookUrl, {
         method: 'POST',

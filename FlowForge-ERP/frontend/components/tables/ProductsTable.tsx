@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Badge from '../ui/Badge';
 import Link from 'next/link';
-import { Edit2, Trash2 } from 'lucide-react';
+import { Edit2, Trash2, Package } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import Image from 'next/image';
 
 interface ProductsTableProps {
   products: any[];
@@ -12,15 +13,28 @@ interface ProductsTableProps {
   onOrderRawMaterial?: (product: any) => void;
 }
 
+/** Maps product name keywords → public image path */
+function resolveProductImage(name: string, type: string): string {
+  const n = name.toLowerCase();
+  if (n.includes('bookshelf') || n.includes('shelf')) return '/products/bookshelf.png';
+  if (n.includes('chair')) return '/products/chair.png';
+  if (n.includes('dining table') || n.includes('dining')) return '/products/dining-table.png';
+  if (n.includes('table')) return '/products/dining-table.png';
+  if (type === 'purchase') return '/products/raw-material.png';
+  return '/products/bookshelf.png'; // generic finished goods fallback
+}
+
 export default function ProductsTable({ products, onDelete, onOrderRawMaterial }: ProductsTableProps) {
   const { user } = useAuth();
   const isAdminOrPM = user?.role === 'admin' || user?.role === 'product_manager';
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
   return (
     <div className="overflow-x-auto">
       <table className="erp-table">
         <thead>
           <tr>
+            <th className="w-16 text-center">Preview</th>
             <th>SKU</th>
             <th>Product Details</th>
             <th>Type</th>
@@ -40,10 +54,35 @@ export default function ProductsTable({ products, onDelete, onOrderRawMaterial }
             const free = onHand - reserved;
             const min = Number(product.minStockLevel);
             const isLowStock = free <= min;
+            const imgSrc = resolveProductImage(product.name, product.procurementType);
+            const hasError = imgErrors[product.id];
 
             return (
               <tr key={product.id}>
+                {/* ── Preview Thumbnail ── */}
+                <td className="w-16">
+                  <div className="flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg border border-surface-border bg-slate-50 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                      {hasError ? (
+                        <Package size={18} className="text-text-muted" />
+                      ) : (
+                        <Image
+                          src={imgSrc}
+                          alt={product.name}
+                          width={40}
+                          height={40}
+                          className="object-contain w-full h-full p-0.5"
+                          onError={() =>
+                            setImgErrors((prev) => ({ ...prev, [product.id]: true }))
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                </td>
+
                 <td className="font-mono text-xs font-semibold text-[#4B164C]">{product.sku}</td>
+
                 <td>
                   <div className="flex flex-col">
                     <span className="font-semibold text-text-primary text-xs">{product.name}</span>
@@ -54,11 +93,13 @@ export default function ProductsTable({ products, onDelete, onOrderRawMaterial }
                     )}
                   </div>
                 </td>
+
                 <td>
                   <Badge variant={product.procurementType === 'manufacture' ? 'purple' : 'blue'}>
                     {product.procurementType === 'manufacture' ? 'Finished Assembly' : 'Raw Material'}
                   </Badge>
                 </td>
+
                 <td className="font-medium text-xs">₹{Number(product.costPrice).toLocaleString('en-IN')}</td>
                 <td className="font-medium text-xs">₹{Number(product.salesPrice).toLocaleString('en-IN')}</td>
                 <td className="text-right font-medium text-xs">{onHand}</td>
@@ -69,6 +110,7 @@ export default function ProductsTable({ products, onDelete, onOrderRawMaterial }
                   </span>
                 </td>
                 <td className="text-right text-text-muted text-xs">{min}</td>
+
                 {isAdminOrPM && (
                   <td>
                     <div className="flex items-center justify-end gap-2 pr-4">

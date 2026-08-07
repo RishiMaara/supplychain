@@ -1501,18 +1501,18 @@ export default function DashboardPage() {
       {/* ========================================================== */}
       {/* Dynamic Action Center Alert Banner */}
       {userRole !== 'admin' && (
-        <Alert variant="info" className="border-brand-accent/20 bg-slate-50 flex items-center justify-between gap-4 mt-6">
-          <div className="flex items-start gap-2.5">
-            <Info className="text-brand-accent mt-0.5 animate-pulse" size={16} />
+        <div className="mt-6 flex items-center justify-between gap-4 px-4 py-3 rounded-xl border border-brand-accent/20 bg-slate-50">
+          <div className="flex items-center gap-3">
+            <Info className="text-brand-accent shrink-0 animate-pulse" size={16} />
             <div>
               <p className="font-bold text-xs text-[#4B164C]">Action Center Alerts</p>
               <p className="text-[11px] text-text-secondary mt-0.5">Need immediate decision routing? View unified diagnostics for bottlenecks and delay resolutions.</p>
             </div>
           </div>
-          <Link href="/action-center" className="text-xs font-bold text-[#4B164C] whitespace-nowrap hover:underline flex items-center gap-0.5">
+          <Link href="/action-center" className="text-xs font-bold text-[#4B164C] whitespace-nowrap hover:underline flex items-center gap-0.5 shrink-0">
             Resolve Bottlenecks <ChevronRight size={13} />
           </Link>
-        </Alert>
+        </div>
       )}
 
       {/* Activity Trail (Visible to all, shows recent operations) */}

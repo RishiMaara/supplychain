@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import { Menu, Bell, Search, LogOut, User, Sparkles, ChevronDown, Plus, HelpCircle } from 'lucide-react';
+import { Menu, Bell, Search, LogOut, User, Sparkles, ChevronDown, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -21,11 +21,11 @@ export default function Topbar({
   const [showRoleMenu, setShowRoleMenu] = useState(false);
 
   const rolesList = [
-    { name: 'Super Admin', email: 'admin@shivfurniture.com', role: 'admin' },
-    { name: 'Sales Executive', email: 'priya@shivfurniture.com', role: 'sales' },
-    { name: 'Product Manager', email: 'ravi@shivfurniture.com', role: 'product_manager' },
-    { name: 'Procurement Mgr', email: 'amit@shivfurniture.com', role: 'purchase' },
-    { name: 'Inventory Manager', email: 'neha@shivfurniture.com', role: 'inventory' },
+    { name: 'Super Admin',      email: 'admin@shivfurniture.com',  role: 'admin' },
+    { name: 'Sales Executive',  email: 'priya@shivfurniture.com',  role: 'sales' },
+    { name: 'Product Manager',  email: 'ravi@shivfurniture.com',   role: 'product_manager' },
+    { name: 'Procurement Mgr',  email: 'amit@shivfurniture.com',   role: 'purchase' },
+    { name: 'Inventory Manager',email: 'neha@shivfurniture.com',   role: 'inventory' },
   ];
 
   const handleSwitchRole = async (email: string) => {
@@ -38,8 +38,12 @@ export default function Topbar({
   };
 
   return (
-    <header className="h-16 bg-white/70 backdrop-blur-md border-b border-surface-border flex items-center justify-between px-6 shrink-0 sticky top-0 z-50">
-      <div className="flex items-center gap-4 flex-1">
+    <header className="h-16 bg-white/70 backdrop-blur-md border-b border-surface-border flex items-center gap-3 px-4 shrink-0 sticky top-0 z-50">
+
+      {/* ── LEFT: Menu + Workspace + Role (fixed, no growth) ── */}
+      <div className="flex items-center gap-2 shrink-0">
+
+        {/* Sidebar toggle */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="text-text-secondary hover:text-brand-primary p-1.5 rounded-lg hover:bg-surface-hover/30 transition-colors"
@@ -47,21 +51,21 @@ export default function Topbar({
           <Menu size={20} />
         </button>
 
-        {/* Workspace Selector */}
-        <div className="relative">
+        {/* Workspace Selector — hidden below lg to save space */}
+        <div className="relative hidden lg:block">
           <button
             onClick={() => setShowWorkspaceMenu(!showWorkspaceMenu)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-surface-hover/30 text-xs font-semibold text-text-primary border border-surface-border bg-slate-50/50 transition-all"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-surface-hover/30 text-xs font-semibold text-text-primary border border-surface-border bg-slate-50/50 transition-all whitespace-nowrap"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
             <span>Shiv Furniture Works (AP-South)</span>
-            <ChevronDown size={14} className="text-text-muted" />
+            <ChevronDown size={13} className="text-text-muted shrink-0" />
           </button>
-          
+
           {showWorkspaceMenu && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setShowWorkspaceMenu(false)} />
-              <div className="absolute left-0 mt-1 w-64 bg-white border border-surface-border rounded-xl shadow-lg z-50 p-1.5 space-y-1 animate-fade-in">
+              <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-surface-border rounded-xl shadow-lg z-50 p-1.5 space-y-1 animate-fade-in">
                 <div className="px-3 py-1 text-[10px] font-bold text-text-muted uppercase tracking-wider">Workspaces</div>
                 <button className="w-full text-left px-3 py-2 rounded-lg bg-surface-hover text-xs font-medium text-brand-primary flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -76,19 +80,19 @@ export default function Topbar({
           )}
         </div>
 
-        {/* Demo Role Switcher */}
+        {/* Role Switcher */}
         <div className="relative">
           <button
             onClick={() => setShowRoleMenu(!showRoleMenu)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-surface-hover/30 text-xs font-bold border border-brand-accent/25 bg-[#F8E7F6]/40 text-[#4B164C] hover:text-brand-hover hover:border-brand-accent transition-all duration-200"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold border border-brand-accent/25 bg-[#F8E7F6]/40 text-[#4B164C] hover:bg-[#F8E7F6]/70 hover:border-brand-accent transition-all duration-200 whitespace-nowrap"
             title="Instant Demo Role Switcher"
           >
-            <Sparkles size={13} className="text-brand-accent animate-pulse" />
-            <span className="hidden sm:inline">Role:</span>
+            <Sparkles size={13} className="text-brand-accent animate-pulse shrink-0" />
+            <span>Role:</span>
             <span className="capitalize">{user?.role?.replace('_', ' ')}</span>
-            <ChevronDown size={13} className="text-text-muted" />
+            <ChevronDown size={13} className="text-text-muted shrink-0" />
           </button>
-          
+
           {showRoleMenu && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setShowRoleMenu(false)} />
@@ -99,10 +103,7 @@ export default function Topbar({
                 {rolesList.map((r) => (
                   <button
                     key={r.role}
-                    onClick={() => {
-                      setShowRoleMenu(false);
-                      handleSwitchRole(r.email);
-                    }}
+                    onClick={() => { setShowRoleMenu(false); handleSwitchRole(r.email); }}
                     className={`w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 text-xs font-medium flex items-center justify-between transition-colors ${
                       user?.role === r.role ? 'bg-[#F8E7F6]/30 text-[#4B164C] font-semibold' : 'text-text-secondary hover:text-[#4B164C]'
                     }`}
@@ -111,17 +112,19 @@ export default function Topbar({
                       <span>{r.name}</span>
                       <span className="text-[9px] text-text-muted">{r.email}</span>
                     </div>
-                    {user?.role === r.role && <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />}
+                    {user?.role === r.role && <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0" />}
                   </button>
                 ))}
               </div>
             </>
           )}
         </div>
+      </div>
 
-        {/* Global Search */}
-        <div className="relative hidden md:block w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
+      {/* ── CENTER: Search (absorbs remaining space) ── */}
+      <div className="flex-1 min-w-0 hidden md:block">
+        <div className="relative max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={15} />
           <input
             type="text"
             placeholder="Search products, orders, SKUs..."
@@ -130,19 +133,22 @@ export default function Topbar({
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* Quick Action Button */}
-        <div className="hidden sm:block">
-          <Link href="/products/new" className="btn-primary text-xs px-3 py-1.5 flex items-center gap-1.5 shadow-none bg-brand-primary hover:bg-brand-hover">
-            <Plus size={14} />
-            <span>New Product</span>
-          </Link>
-        </div>
+      {/* ── RIGHT: Actions (fixed, no growth) ── */}
+      <div className="flex items-center gap-2 shrink-0">
 
-        {/* AI Assistant Toggle */}
+        {/* New Product */}
+        <Link
+          href="/products/new"
+          className="btn-primary text-xs px-3 py-1.5 hidden sm:flex items-center gap-1.5 shadow-none bg-brand-primary hover:bg-brand-hover whitespace-nowrap"
+        >
+          <Plus size={14} />
+          <span>New Product</span>
+        </Link>
+
+        {/* AI Insights */}
         <button
           onClick={() => setAiOpen(!aiOpen)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap ${
             aiOpen
               ? 'bg-brand-accent/20 border-brand-accent text-brand-primary font-bold shadow-sm'
               : 'bg-white border-surface-border text-brand-primary hover:bg-brand-accent/10 hover:border-brand-accent'
@@ -161,11 +167,11 @@ export default function Topbar({
 
         <div className="h-6 w-px bg-surface-border" />
 
-        {/* User Info & Logout */}
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-text-primary">
-            <User size={14} className="text-text-muted" />
-            <span className="max-w-[100px] truncate">{user?.name}</span>
+        {/* User + Logout */}
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-text-primary">
+            <User size={14} className="text-text-muted shrink-0" />
+            <span className="max-w-[80px] truncate">{user?.name}</span>
           </div>
           <button
             onClick={() => logout()}
