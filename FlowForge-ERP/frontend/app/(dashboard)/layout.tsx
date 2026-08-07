@@ -1,16 +1,18 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/auth.store';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Topbar from '@/components/layout/Topbar';
 import { AiAssistant } from '@/components/ai/AiAssistant';
-import { Loader2, ShieldAlert, ArrowLeft, Lock } from 'lucide-react';
+import { Loader2, ShieldAlert, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, useGetMe, user } = useAuth();
+  const _hasHydrated = useAuthStore((s) => s._hasHydrated);
   const router = useRouter();
   const pathname = usePathname();
   const { isLoading, isError } = useGetMe();
@@ -18,10 +20,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [aiOpen, setAiOpen] = useState(false);
 
   useEffect(() => {
+    // Only redirect after Zustand has rehydrated from localStorage
+    if (!_hasHydrated) return;
     if (!isAuthenticated || isError) {
       router.push('/login');
     }
-  }, [isAuthenticated, isError, router]);
+  }, [_hasHydrated, isAuthenticated, isError, router]);
 
   // Authorization check
   const isAuthorized = () => {
@@ -51,7 +55,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const authorized = isAuthorized();
 
-  if (isLoading || !isAuthenticated) {
+  if (!_hasHydrated || isLoading || !isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
         <Loader2 className="animate-spin text-[#4B164C]" size={40} />

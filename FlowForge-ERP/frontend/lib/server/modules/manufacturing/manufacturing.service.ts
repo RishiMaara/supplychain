@@ -165,7 +165,7 @@ export class ManufacturingService {
       }
       
       return ordersToCreate;
-    });
+    }, { maxWait: 5000, timeout: 20000 });
 
     return Promise.all(createdOrders.map(mapMOStatus));
   }
@@ -378,7 +378,7 @@ export class ManufacturingService {
           creator: { select: { name: true } },
         },
       });
-    });
+    }, { maxWait: 5000, timeout: 20000 });
 
     await createAuditLog({
       userId: actorId,
@@ -552,7 +552,7 @@ export class ManufacturingService {
           creator: { select: { name: true } },
         },
       });
-    });
+    }, { maxWait: 5000, timeout: 20000 });
 
     await createAuditLog({
       userId: actorId,

@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased min-h-screen bg-surface-DEFAULT text-text-primary">
+      <body className="antialiased min-h-screen bg-surface-DEFAULT text-text-primary" suppressHydrationWarning>
         <Providers>
           {children}
           <Toaster 
